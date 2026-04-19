@@ -25,13 +25,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 77101251704994261}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.14601603, y: -0.017122671, z: 0.002527655, w: 0.9891308}
-  m_LocalPosition: {x: 0.44, y: 3.22, z: -4.68}
+  m_LocalRotation: {x: 0.13122538, y: -0.13382594, z: 0.017881155, w: 0.98211557}
+  m_LocalPosition: {x: 3.86, y: 3.88, z: -3.75}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7793759462707747568}
-  m_LocalEulerAnglesHint: {x: 16.795, y: -1.983, z: 0}
+  m_LocalEulerAnglesHint: {x: 15.221, y: -15.519, z: 0}
 --- !u!114 &4180021278938738224
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -84,6 +84,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7793759462707747568}
+  - component: {fileID: 3327287680924842071}
+  - component: {fileID: 6763413618509588690}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -107,8 +109,39 @@ Transform:
   - {fileID: 3502591982963631968}
   - {fileID: 584867180999654921}
   - {fileID: 1437562265128471161}
+  - {fileID: 136359782040068720}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3327287680924842071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 209729646853011972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7275dc2e5cae7b840be2f87123b08834, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  fishingController: {fileID: 6763413618509588690}
+  fishingRodController: {fileID: 6528045806412818912}
+--- !u!114 &6763413618509588690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 209729646853011972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4b0760ecc6c2544dbb0d8d74f63dc9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FishingController
+  waitingStateMinTime: 2
+  waitingStateMaxTime: 6
+  biteStateTime: 1.5
+  resultStateTime: 2
 --- !u!1 &5209298033751080250
 GameObject:
   m_ObjectHideFlags: 0
@@ -254,3 +287,92 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1001 &8898509140999854687
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7793759462707747568}
+    m_Modifications:
+    - target: {fileID: 2442532062258410431, guid: afef2f2dbfbd33c4289e4e0395c04877, type: 3}
+      propertyPath: castSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2442532062258410431, guid: afef2f2dbfbd33c4289e4e0395c04877, type: 3}
+      propertyPath: returnSpeed
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2442532062258410431, guid: afef2f2dbfbd33c4289e4e0395c04877, type: 3}
+      propertyPath: windupPause
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2442532062258410431, guid: afef2f2dbfbd33c4289e4e0395c04877, type: 3}
+      propertyPath: windupSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8141722385829843854, guid: afef2f2dbfbd33c4289e4e0395c04877, type: 3}
+      propertyPath: m_Name
+      value: FishingRod
+      objectReference: {fileID: 0}
+    - target: {fileID: 8834277502134859823, guid: afef2f2dbfbd33c4289e4e0395c04877, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.53
+      objectReference: {fileID: 0}
+    - target: {fileID: 8834277502134859823, guid: afef2f2dbfbd33c4289e4e0395c04877, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.39
+      objectReference: {fileID: 0}
+    - target: {fileID: 8834277502134859823, guid: afef2f2dbfbd33c4289e4e0395c04877, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8834277502134859823, guid: afef2f2dbfbd33c4289e4e0395c04877, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9853569
+      objectReference: {fileID: 0}
+    - target: {fileID: 8834277502134859823, guid: afef2f2dbfbd33c4289e4e0395c04877, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.17050445
+      objectReference: {fileID: 0}
+    - target: {fileID: 8834277502134859823, guid: afef2f2dbfbd33c4289e4e0395c04877, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8834277502134859823, guid: afef2f2dbfbd33c4289e4e0395c04877, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8834277502134859823, guid: afef2f2dbfbd33c4289e4e0395c04877, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 19.634
+      objectReference: {fileID: 0}
+    - target: {fileID: 8834277502134859823, guid: afef2f2dbfbd33c4289e4e0395c04877, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8834277502134859823, guid: afef2f2dbfbd33c4289e4e0395c04877, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: afef2f2dbfbd33c4289e4e0395c04877, type: 3}
+--- !u!4 &136359782040068720 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8834277502134859823, guid: afef2f2dbfbd33c4289e4e0395c04877, type: 3}
+  m_PrefabInstance: {fileID: 8898509140999854687}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6528045806412818912 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2442532062258410431, guid: afef2f2dbfbd33c4289e4e0395c04877, type: 3}
+  m_PrefabInstance: {fileID: 8898509140999854687}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3896f069b9899d0408eea2137a3de718, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FishingRodController
