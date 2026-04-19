@@ -18,6 +18,9 @@ public class FishingRodController : MonoBehaviour
 
 	[Header("Cast line references")]
 	[SerializeField] private LineRenderer linePrefab;
+	[SerializeField] private GameObject bobberPrefab;
+	[SerializeField] private GameObject splashPrefab;
+	//[SerializeField] private WaterRippleController rippleController;
 	[SerializeField] private Transform castLineStartPoint;
 	[Range(15f, 30f)]
 	[SerializeField] private float minCastDistance = 20.0f;
@@ -27,12 +30,23 @@ public class FishingRodController : MonoBehaviour
 
 	private Coroutine castRoutine;
 	private Quaternion baseFishingRodRotation;
+	private GameObject currentBobber;
 	private LineRenderer currentLine;
 	private Vector3 castEndPoint;
 
 	private void Start()
 	{
 		baseFishingRodRotation = transform.localRotation;
+	}
+
+	private void Update()
+	{
+		if (currentBobber != null)
+		{
+			Vector3 pos = currentBobber.transform.position;
+			pos.y = Mathf.Sin(Time.time * 2f) * 0.05f;
+			currentBobber.transform.position = pos;
+		}
 	}
 
 	private void LateUpdate()
@@ -43,6 +57,11 @@ public class FishingRodController : MonoBehaviour
 
 		currentLine.SetPosition(0, start);
 		currentLine.SetPosition(1, castEndPoint);
+
+		if (currentBobber != null)
+			currentLine.SetPosition(1, currentBobber.transform.position);
+		else
+			currentLine.SetPosition(1, castEndPoint);
 	}
 
 	public void StartFishingRodCastWindup()
@@ -107,9 +126,18 @@ public class FishingRodController : MonoBehaviour
 		forwardFlat.Normalize();
 
 		castEndPoint = castLineStartPoint.position + forwardFlat * distance;
-
 		castEndPoint.y = 0f;
 
 		currentLine.positionCount = 2;
+
+		if(currentBobber != null)
+		{
+			Destroy(currentBobber.gameObject);
+		}
+
+		currentBobber = Instantiate(bobberPrefab, castEndPoint, Quaternion.identity);
+		Instantiate(splashPrefab, castEndPoint, Quaternion.identity);
+
+		//TriggerRipple(castEndPoint);
 	}
 }

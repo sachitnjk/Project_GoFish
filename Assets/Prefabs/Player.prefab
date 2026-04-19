@@ -297,7 +297,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2442532062258410431, guid: afef2f2dbfbd33c4289e4e0395c04877, type: 3}
       propertyPath: maxCastDistance
-      value: 80
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 2442532062258410431, guid: afef2f2dbfbd33c4289e4e0395c04877, type: 3}
       propertyPath: minCastDistance

@@ -144,9 +144,11 @@ MonoBehaviour:
   windupPause: 0.5
   castFollowThroughPause: 0.05
   linePrefab: {fileID: 4061476490219713603, guid: 882247cfd5e6d224fb3189c17b36d762, type: 3}
+  bobberPrefab: {fileID: 6228398907126746090, guid: 70795f6ae910f02439949c0913f00677, type: 3}
+  splashPrefab: {fileID: 7857926787693010310, guid: b9c7a8c5d3bfc844e8dc16627284c4aa, type: 3}
   castLineStartPoint: {fileID: 4791333351527020856}
-  minCastDistance: 5
-  maxCastDistance: 10
+  minCastDistance: 15
+  maxCastDistance: 15
 --- !u!1 &8271845948914800640
 GameObject:
   m_ObjectHideFlags: 0
