@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class FishingRodController : MonoBehaviour
 {
+	[Header("Fishing Rod value references")]
 	[SerializeField] private float maxNegativeRotation = -20.0f;
 	[SerializeField] private float maxPositiveRotation = 50.0f;
 	[SerializeField] private float windupSpeed = 5.0f;
@@ -15,12 +16,33 @@ public class FishingRodController : MonoBehaviour
 	[Tooltip("Small pause at end of cast for better follow through feel")]
 	[SerializeField] private float castFollowThroughPause = 0.25f;
 
+	[Header("Cast line references")]
+	[SerializeField] private LineRenderer linePrefab;
+	[SerializeField] private Transform castLineStartPoint;
+	[Range(15f, 30f)]
+	[SerializeField] private float minCastDistance = 20.0f;
+	[Range(15f, 80f)]
+	[SerializeField] private float maxCastDistance = 80.0f;
+
+
 	private Coroutine castRoutine;
 	private Quaternion baseFishingRodRotation;
+	private LineRenderer currentLine;
+	private Vector3 castEndPoint;
 
 	private void Start()
 	{
 		baseFishingRodRotation = transform.localRotation;
+	}
+
+	private void LateUpdate()
+	{
+		if (currentLine == null) return;
+
+		Vector3 start = castLineStartPoint.position;
+
+		currentLine.SetPosition(0, start);
+		currentLine.SetPosition(1, castEndPoint);
 	}
 
 	public void StartFishingRodCastWindup()
@@ -43,6 +65,8 @@ public class FishingRodController : MonoBehaviour
 		yield return RotateToAngle(maxNegativeRotation, windupSpeed);
 
 		yield return new WaitForSeconds(windupPause);
+
+		SpawnCastLine();
 
 		yield return RotateToAngle(maxPositiveRotation, castSpeed);
 
@@ -70,5 +94,22 @@ public class FishingRodController : MonoBehaviour
 		}
 
 		transform.localRotation = targetRot;
+	}
+
+	private void SpawnCastLine()
+	{
+		currentLine = Instantiate(linePrefab);
+
+		float distance = Random.Range(minCastDistance, maxCastDistance);
+
+		Vector3 forwardFlat = transform.forward;
+		forwardFlat.y = 0f;
+		forwardFlat.Normalize();
+
+		castEndPoint = castLineStartPoint.position + forwardFlat * distance;
+
+		castEndPoint.y = 0f;
+
+		currentLine.positionCount = 2;
 	}
 }
