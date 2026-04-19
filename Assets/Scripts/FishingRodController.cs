@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class FishingRodController : MonoBehaviour
 {
@@ -20,7 +21,6 @@ public class FishingRodController : MonoBehaviour
 	[SerializeField] private LineRenderer linePrefab;
 	[SerializeField] private GameObject bobberPrefab;
 	[SerializeField] private GameObject splashPrefab;
-	//[SerializeField] private WaterRippleController rippleController;
 	[SerializeField] private Transform castLineStartPoint;
 	[Range(15f, 30f)]
 	[SerializeField] private float minCastDistance = 20.0f;
@@ -141,8 +141,17 @@ public class FishingRodController : MonoBehaviour
 		}
 
 		currentBobber = Instantiate(bobberPrefab, castEndPoint, Quaternion.identity);
-		Instantiate(splashPrefab, castEndPoint, Quaternion.identity);
+		Vector3 fxOffset = new Vector3(0f, 1f, 0f);
+		Instantiate(splashPrefab, castEndPoint + fxOffset, Quaternion.identity);
 
-		//TriggerRipple(castEndPoint);
+		GameManager.Instance.RippleController.TriggerRipple(castEndPoint);
+		//StartCoroutine(DelayedRipple());
 	}
+
+
+	//private IEnumerator DelayedRipple()
+	//{
+	//	yield return new WaitForSeconds(0.5f);
+	//	GameManager.Instance.RippleController.TriggerRipple(castEndPoint);
+	//}
 }
