@@ -117,6 +117,11 @@ public class FishingRodController : MonoBehaviour
 
 	private void SpawnCastLine()
 	{
+		if(currentLine != null)
+		{
+			Destroy(currentLine.gameObject);
+		}
+
 		currentLine = Instantiate(linePrefab);
 
 		float distance = Random.Range(minCastDistance, maxCastDistance);
