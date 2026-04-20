@@ -1,4 +1,5 @@
 using System;
+using UnityEditor;
 using UnityEngine;
 
 
@@ -12,12 +13,50 @@ public enum FishingState
 	Result
 }
 
+[Serializable]
+public enum FishType
+{
+	GoldenMackarel,
+	MajiliSnapper,
+	CoastalCatfish,
+	Tuna,
+	Sardine,
+	Bream,
+	Anchovy,
+	Herring
+}
+
+[Serializable]
+public enum Rarity
+{
+	Common,
+	Uncommon,
+	Rare
+}
+
+[System.Serializable]
+public struct FishRuntimeData
+{
+	public FishData fishData;
+	public Rarity rarity;
+	//difficulty can be added in here
+
+	public FishRuntimeData(FishData fishData, Rarity rarity)
+	{
+		this.fishData = fishData;
+		this.rarity = rarity;
+	}
+}
+
 public class FishingController : MonoBehaviour
 {
 
 	private FishingState currentState;
 	private float stateTimer;
-	
+
+	[SerializeField] private FishDataComposite fishDataComposite;
+	[SerializeField] private GameObject FishPrefab;
+
 	[Header("STATE REFERENCES")]
 	[Header("Waiting state references")]
 	[Range(1.0f, 3.0f)]
@@ -28,9 +67,11 @@ public class FishingController : MonoBehaviour
 	[SerializeField] private float biteStateTime = 1.5f;
 	[Header("Result state references")]
 	[SerializeField] private float resultStateTime = 2f;
-
 	
 	public FishingState CurrentState => currentState;
+
+	private FishRuntimeData currentFishRuntimeData;
+	private GameObject currentSpawnedFish;
 
 	private void Update()
 	{
@@ -97,7 +138,26 @@ public class FishingController : MonoBehaviour
 
 	public void OnBiteHit()
 	{
-		SetState(FishingState.Reeling);
+		//Spawn random fish
+		if(fishDataComposite != null)
+		{
+			FishData randomFishData = fishDataComposite.GetRandomFishData();
+
+			int randomIndex = UnityEngine.Random.Range(0, System.Enum.GetNames(typeof(Rarity)).Length);
+			Rarity randomizedRarity = (Rarity)Enum.GetValues(typeof(Rarity)).GetValue(randomIndex);
+
+			currentFishRuntimeData = new FishRuntimeData(randomFishData, randomizedRarity);
+			SpawnFish();
+
+			SetState(FishingState.Reeling);
+		}
+	}
+
+	private void SpawnFish()
+	{
+		currentSpawnedFish = Instantiate(FishPrefab);
+		FishBase instantiatedFish = currentSpawnedFish.gameObject.GetComponent<FishBase>();
+		instantiatedFish.PopulateData(currentFishRuntimeData);
 	}
 
 	#endregion
