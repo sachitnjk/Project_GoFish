@@ -7,7 +7,7 @@
             "id": "84f244f3-da1f-47e6-ad2d-bdf003e6ee41",
             "actions": [
                 {
-                    "name": "Cast",
+                    "name": "Interact",
                     "type": "Button",
                     "id": "7d1d17b9-94a6-4bb6-b0b9-05d572cb3419",
                     "expectedControlType": "",
@@ -20,11 +20,11 @@
                 {
                     "name": "",
                     "id": "f36c4a33-2fc1-4315-8ce0-18e76cf636bd",
-                    "path": "<Keyboard>/e",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Cast",
+                    "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -35,7 +35,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Cast",
+                    "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

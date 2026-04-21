@@ -1,6 +1,7 @@
 using System;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 
 [Serializable]
@@ -67,11 +68,38 @@ public class FishingController : MonoBehaviour
 	[SerializeField] private float biteStateTime = 1.5f;
 	[Header("Result state references")]
 	[SerializeField] private float resultStateTime = 2f;
-	
+
+	[Header("Reeling related references")]
+	[SerializeField] private float reelProgress = 0f;
+	[SerializeField] private float reelSpeed = 0.4f;
+	[SerializeField] private float failSpeed = 0.2f;
+
+	[SerializeField] private float playerBarPosition = 0f;
+	[SerializeField] private float playerBarSpeed = 1.5f;
+	[SerializeField] private float gravity = 2f;
+
+	[SerializeField] private float fishPosition = 0f;
+	[SerializeField] private float fishMoveSpeed = 1f;
+
+	[SerializeField] private float catchThreshold = 1f;
+
+	private bool isReeling = false;
+
 	public FishingState CurrentState => currentState;
 
+	private PlayerController playerController;
 	private FishRuntimeData currentFishRuntimeData;
 	private GameObject currentSpawnedFish;
+
+	private void Start()
+	{
+		playerController = this.gameObject.AddComponent<PlayerController>();
+	}
+
+	private void OnDestroy()
+	{
+		
+	}
 
 	private void Update()
 	{
@@ -117,6 +145,7 @@ public class FishingController : MonoBehaviour
 				stateTimer = biteStateTime;
 				break;
 			case FishingState.Reeling:
+				StartReeling();
 				break;
 			case FishingState.Result:
 				stateTimer = resultStateTime;
@@ -134,6 +163,15 @@ public class FishingController : MonoBehaviour
 	public void StartFishing()
 	{
 		SetState(FishingState.Waiting);
+	}
+
+	public void StartReeling()
+	{
+		reelProgress = 0f;
+		playerBarPosition = 0.5f;
+		fishPosition = UnityEngine.Random.value;
+
+		isReeling = true;
 	}
 
 	public void OnBiteHit(Vector3 castEndPoint)
@@ -191,7 +229,52 @@ public class FishingController : MonoBehaviour
 
 	private void UpdateReeling()
 	{
+		float deltaTime = Time.deltaTime;
 
+		if(playerController.isCastHeld)
+		{
+			playerBarPosition += playerBarSpeed * deltaTime;
+		}
+		else
+		{
+			playerBarPosition -= gravity * deltaTime;
+		}
+
+		playerBarPosition = Mathf.Clamp01(playerBarPosition);
+
+		fishPosition += Mathf.Sin(Time.time * fishMoveSpeed) * deltaTime;
+		fishPosition = Mathf.Clamp01(fishPosition);
+
+		float barSize = 0.2f;
+
+		bool isInside = playerBarPosition > fishPosition - barSize && playerBarPosition < fishPosition + barSize;
+
+		if(isInside)
+		{
+			reelProgress += reelSpeed * deltaTime;
+		}
+		else
+		{
+			reelSpeed -= failSpeed * deltaTime;
+		}
+
+		reelProgress = Mathf.Clamp01(reelProgress);
+
+		//Succcues scenario
+		if(reelProgress >= catchThreshold)
+		{
+			isReeling = false;
+			EnterState(FishingState.Result);
+		}
+
+		//fail Scenariao
+		if(reelProgress <= 0f)
+		{
+			isReeling = false;
+			EnterState(FishingState.Idle);
+		}
+
+		Debug.Log($"Fish: {fishPosition:F2} | Player: {playerBarPosition:F2} | Progress: {reelProgress:F2}");
 	}
 
 	private void UpdateResult()

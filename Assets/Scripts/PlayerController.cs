@@ -10,12 +10,12 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private FishingController fishingController;
 	[SerializeField] private FishingRodController fishingRodController;
 
-	private bool isCastHeld = false;
+	public bool isCastHeld { get; private set; } = false;
 
 	private void Start()
 	{
 		playerInput = PlayerInputProvider.Instance.PlayerInput;
-		CastAction = playerInput.actions["Cast"];
+		CastAction = playerInput.actions["Interact"];
 
 		CastAction.performed += HandleOnCastAction;
 		CastAction.canceled += HandleOnCastActionReleased;
@@ -29,6 +29,8 @@ public class PlayerController : MonoBehaviour
 
 	private void HandleOnCastAction(InputAction.CallbackContext context)
 	{
+		isCastHeld = true;
+
 		if (fishingController.CurrentState == FishingState.Bite && fishingRodController.CastEndPoint != null)
 		{
 			fishingController.OnBiteHit(fishingRodController.CastEndPoint);
@@ -37,6 +39,8 @@ public class PlayerController : MonoBehaviour
 
 	private void HandleOnCastActionReleased(InputAction.CallbackContext context)
 	{
+		isCastHeld = false;
+
 		if (fishingController.CurrentState == FishingState.Reeling)
 		{
 			return;
