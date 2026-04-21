@@ -136,7 +136,7 @@ public class FishingController : MonoBehaviour
 		SetState(FishingState.Waiting);
 	}
 
-	public void OnBiteHit()
+	public void OnBiteHit(Vector3 castEndPoint)
 	{
 		//Spawn random fish
 		if(fishDataComposite != null)
@@ -147,15 +147,15 @@ public class FishingController : MonoBehaviour
 			Rarity randomizedRarity = (Rarity)Enum.GetValues(typeof(Rarity)).GetValue(randomIndex);
 
 			currentFishRuntimeData = new FishRuntimeData(randomFishData, randomizedRarity);
-			SpawnFish();
+			SpawnFish(castEndPoint);
 
 			SetState(FishingState.Reeling);
 		}
 	}
 
-	private void SpawnFish()
+	private void SpawnFish(Vector3 castEndPoint)
 	{
-		currentSpawnedFish = Instantiate(FishPrefab);
+		currentSpawnedFish = Instantiate(FishPrefab, castEndPoint, Quaternion.identity);
 		FishBase instantiatedFish = currentSpawnedFish.gameObject.GetComponent<FishBase>();
 		instantiatedFish.PopulateData(currentFishRuntimeData);
 	}

@@ -138,6 +138,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4b0760ecc6c2544dbb0d8d74f63dc9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FishingController
+  fishDataComposite: {fileID: 11400000, guid: 80029edb999062547b7c48970209840e, type: 2}
+  FishPrefab: {fileID: 8824051438657667513, guid: 87d67a4646e443c4d91b19c3f2b6b928, type: 3}
   waitingStateMinTime: 2
   waitingStateMaxTime: 6
   biteStateTime: 1.5

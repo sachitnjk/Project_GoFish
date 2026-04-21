@@ -29,17 +29,19 @@ public class PlayerController : MonoBehaviour
 
 	private void HandleOnCastAction(InputAction.CallbackContext context)
 	{
-		isCastHeld = true;
-
-		if (fishingController.CurrentState == FishingState.Bite)
+		if (fishingController.CurrentState == FishingState.Bite && fishingRodController.CastEndPoint != null)
 		{
-			fishingController.OnBiteHit();
+			fishingController.OnBiteHit(fishingRodController.CastEndPoint);
 		}
 	}
 
 	private void HandleOnCastActionReleased(InputAction.CallbackContext context)
 	{
-		isCastHeld = false;
+		if (fishingController.CurrentState == FishingState.Reeling)
+		{
+			return;
+			//fishingRodController.StartReeling();
+		}
 
 		fishingRodController.ReleaseCastWindup(() =>
 		{

@@ -32,7 +32,7 @@ public class FishingRodController : MonoBehaviour
 	private Quaternion baseFishingRodRotation;
 	private GameObject currentBobber;
 	private LineRenderer currentLine;
-	private Vector3 castEndPoint;
+	public Vector3 CastEndPoint;
 
 	private void Start()
 	{
@@ -56,12 +56,12 @@ public class FishingRodController : MonoBehaviour
 		Vector3 start = castLineStartPoint.position;
 
 		currentLine.SetPosition(0, start);
-		currentLine.SetPosition(1, castEndPoint);
+		currentLine.SetPosition(1, CastEndPoint);
 
 		if (currentBobber != null)
 			currentLine.SetPosition(1, currentBobber.transform.position);
 		else
-			currentLine.SetPosition(1, castEndPoint);
+			currentLine.SetPosition(1, CastEndPoint);
 	}
 
 	public void StartFishingRodCastWindup()
@@ -130,8 +130,8 @@ public class FishingRodController : MonoBehaviour
 		forwardFlat.y = 0f;
 		forwardFlat.Normalize();
 
-		castEndPoint = castLineStartPoint.position + forwardFlat * distance;
-		castEndPoint.y = 0f;
+		CastEndPoint = castLineStartPoint.position + forwardFlat * distance;
+		CastEndPoint.y = 0f;
 
 		currentLine.positionCount = 2;
 
@@ -140,11 +140,11 @@ public class FishingRodController : MonoBehaviour
 			Destroy(currentBobber.gameObject);
 		}
 
-		currentBobber = Instantiate(bobberPrefab, castEndPoint, Quaternion.identity);
+		currentBobber = Instantiate(bobberPrefab, CastEndPoint, Quaternion.identity);
 		Vector3 fxOffset = new Vector3(0f, 1f, 0f);
-		Instantiate(splashPrefab, castEndPoint + fxOffset, Quaternion.identity);
+		Instantiate(splashPrefab, CastEndPoint + fxOffset, Quaternion.identity);
 
-		GameManager.Instance.RippleController.TriggerRipple(castEndPoint);
+		GameManager.Instance.RippleController.TriggerRipple(CastEndPoint);
 		//StartCoroutine(DelayedRipple());
 	}
 
