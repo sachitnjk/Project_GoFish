@@ -144,6 +144,14 @@ MonoBehaviour:
   waitingStateMaxTime: 6
   biteStateTime: 1.5
   resultStateTime: 2
+  reelProgress: 0
+  reelSpeed: 0.4
+  failSpeed: 0.2
+  playerBarPosition: 0
+  playerBarSpeed: 0.8
+  gravity: 0.9
+  fishPosition: 0
+  catchThreshold: 1
 --- !u!1 &5209298033751080250
 GameObject:
   m_ObjectHideFlags: 0

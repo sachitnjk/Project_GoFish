@@ -5,4 +5,5 @@ public class FishData : ScriptableObject
 {
 	public FishType fishType;
 	public Sprite fishSprite;
+	public float fishSpeed = 0.5f;
 }
