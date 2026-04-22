@@ -14,6 +14,8 @@ public class UIManager : MonoBehaviour
 	[SerializeField] private Image fishBarSprite_Image;
 	[SerializeField] private ResultsUI resultsUIPrefab;
 
+	[field: SerializeField] public UIStateMachine UI_StateMachine { get; private set; }
+
 	public ResultsUI currentInstantiatedResultsUI { get; private set; }
 
 	private void Awake()

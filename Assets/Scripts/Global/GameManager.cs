@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 
 	public bool IsResultsLock;
 
+	[Tooltip("Needs on scene reference")]
 	[field: SerializeField] public WaterRippleController RippleController { get; private set; }
 
 	private void Awake()
