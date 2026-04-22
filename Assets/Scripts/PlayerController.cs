@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private FishingController fishingController;
 	[SerializeField] private FishingRodController fishingRodController;
 
+	public FishingRodController FishingRodController => fishingRodController;
+
 	public bool isCastHeld { get; private set; } = false;
 
 	private void Start()
@@ -41,11 +43,11 @@ public class PlayerController : MonoBehaviour
 	{
 		isCastHeld = false;
 
-		if (fishingController.CurrentState == FishingState.Reeling)
+		if (fishingController.CurrentState != FishingState.Idle)
 		{
 			return;
-			//fishingRodController.StartReeling();
 		}
+
 
 		fishingRodController.ReleaseCastWindup(() =>
 		{

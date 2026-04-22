@@ -1,7 +1,10 @@
 using System;
+using System.Collections;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UI;
 
 
@@ -21,11 +24,8 @@ public enum FishType
 	GoldenMackarel,
 	MajiliSnapper,
 	CoastalCatfish,
-	Tuna,
-	Sardine,
 	Bream,
-	Anchovy,
-	Herring
+	Sturgeon
 }
 
 [Serializable]
@@ -72,6 +72,7 @@ public class FishingController : MonoBehaviour
 	[SerializeField] private GameObject FishPrefab;
 
 	[Header("STATE REFERENCES")]
+	[SerializeField] private TextMeshProUGUI currentState_TextBox;
 	[Header("Waiting state references")]
 	[Range(1.0f, 3.0f)]
 	[SerializeField] private float waitingStateMinTime = 2.0f;
@@ -96,6 +97,8 @@ public class FishingController : MonoBehaviour
 
 	[SerializeField] private float catchThreshold = 1f;
 
+	private RectTransform currentStateTextBox_RectTransform;
+
 	private float fishTarget;
 	private float behaviourTimer;
 	private float fishVelocity;
@@ -111,6 +114,9 @@ public class FishingController : MonoBehaviour
 	private void Start()
 	{
 		playerController = GetComponent<PlayerController>();
+
+		currentState_TextBox.text = currentState.ToString();
+		currentStateTextBox_RectTransform = currentState_TextBox.GetComponent<RectTransform>();
 	}
 
 	private void OnDestroy()
@@ -140,11 +146,17 @@ public class FishingController : MonoBehaviour
 		}
 	}
 
+	private void LateUpdate()
+	{
+		AlignTextToCam();
+	}
+
 	public void SetState(FishingState newState)
 	{
 		ExitState(currentState);
 
 		currentState = newState;
+		currentState_TextBox.text = newState.ToString();
 
 		EnterState(newState);
 	}
@@ -165,14 +177,29 @@ public class FishingController : MonoBehaviour
 				StartReeling();
 				break;
 			case FishingState.Result:
-				stateTimer = resultStateTime;
+				GameManager.Instance.IsResultsLock = true;
+				ShowResult();
+				//stateTimer = resultStateTime;
 				break;
 		}
 	}
 
 	public void ExitState(FishingState state)
 	{
-
+		switch(state)
+		{
+			case FishingState.Idle:
+				break;
+			case FishingState.Waiting:
+				break;
+			case FishingState.Bite:
+				break;
+			case FishingState.Reeling:
+				UIManager.Instance.ToggleReelingUI(false);
+				break;
+			case FishingState.Result:
+				break;
+		}
 	}
 
 	#region State Transitions
@@ -210,6 +237,7 @@ public class FishingController : MonoBehaviour
 
 			currentFishRuntimeData = new FishRuntimeData(randomFishData, randomizedRarity, fishBehaviour, reelSpeed, failSpeed);
 			SpawnFish(castEndPoint);
+			UIManager.Instance.UpdateReelingUI(currentFishRuntimeData);
 
 			SetState(FishingState.Reeling);
 		}
@@ -219,6 +247,15 @@ public class FishingController : MonoBehaviour
 	#endregion
 
 	#region Helpers
+
+	private void AlignTextToCam()
+	{
+		Vector3 dir = currentStateTextBox_RectTransform.position - Camera.main.gameObject.transform.position;
+		dir.y = 0f;
+
+		if (dir.sqrMagnitude > 0.001f)
+			currentStateTextBox_RectTransform.rotation = Quaternion.LookRotation(dir);
+	}
 
 	private FishBehaviour GetFishBehaviour(Rarity rarity)
 	{
@@ -267,7 +304,7 @@ public class FishingController : MonoBehaviour
 	{
 		currentSpawnedFish = Instantiate(FishPrefab, castEndPoint, Quaternion.identity);
 		FishBase instantiatedFish = currentSpawnedFish.gameObject.GetComponent<FishBase>();
-		instantiatedFish.PopulateData(currentFishRuntimeData);
+		instantiatedFish.PopulateVisualData(currentFishRuntimeData);
 	}
 
 	private void UpdateFishMovement(float dt)
@@ -290,6 +327,60 @@ public class FishingController : MonoBehaviour
 		fishPosition = Mathf.Clamp01(fishPosition);
 	}
 
+	private void HandleOnReeledIn()
+	{
+		isReeling = false;
+		StartCoroutine(PullFishToPlayer());
+	}
+
+	private IEnumerator PullFishToPlayer()
+	{
+		if (currentSpawnedFish == null) yield break;
+
+		FishingRodController fishingRodController = playerController.FishingRodController;
+
+		Transform fish = currentSpawnedFish.transform;
+		Vector3 start = fish.position;
+		Vector3 end = fishingRodController.CastLineStartPoint.position;
+
+		float duration = 0.5f;
+		float t = 0f;
+
+		while (t < 1f)
+		{
+			if(fish != null)
+			{
+				t += Time.deltaTime / duration;
+
+				Vector3 pos = Vector3.Lerp(start, end, t);
+
+				float height = Mathf.Sin(t * Mathf.PI) * 1.5f;
+				pos.y += height;
+
+				fish.position = pos;
+
+				fishingRodController.UpdateLineEndPoint(pos);
+			}
+
+			yield return null;
+		}
+
+		if(fish != null)
+		{
+			fish.position = end;
+		}
+
+		Destroy(currentSpawnedFish);
+		fishingRodController.DisableLine();
+
+		SetState(FishingState.Result);
+		//EnterState(FishingState.Result);
+	}
+
+	private void ShowResult()
+	{
+		UIManager.Instance.SpawnResults(currentFishRuntimeData.rarity, currentFishRuntimeData.fishData.fishSprite, currentFishRuntimeData.fishData.fishType);
+	}
 
 	#endregion
 
@@ -411,7 +502,11 @@ public class FishingController : MonoBehaviour
 		if(reelProgress >= catchThreshold)
 		{
 			isReeling = false;
-			EnterState(FishingState.Result);
+
+			//Trigger fish being pulled out of water.
+			HandleOnReeledIn();
+
+			//SetState(FishingState.Result);
 		}
 
 		//fail Scenariao
@@ -421,22 +516,16 @@ public class FishingController : MonoBehaviour
 			EnterState(FishingState.Idle);
 		}
 
-		Debug.Log(fishPosition);
-
 		UIManager.Instance.SetReelingValues(reelProgress, playerBarPosition, fishPosition);
-
-
-		Debug.Log($"Fish: {fishPosition:F2} | Player: {playerBarPosition:F2} | Progress: {reelProgress:F2}");
 	}
 
 	private void UpdateResult()
 	{
-		stateTimer -= Time.deltaTime;
-
-		if (stateTimer <= 0f)
+		if(!GameManager.Instance.IsResultsLock)
 		{
 			SetState(FishingState.Idle);
 		}
+		return;
 	}
 
 	#endregion

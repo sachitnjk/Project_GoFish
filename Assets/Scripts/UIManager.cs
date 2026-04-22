@@ -11,6 +11,10 @@ public class UIManager : MonoBehaviour
 	[SerializeField] private Slider reelingProgress_Slider;
 	[SerializeField] private RectTransform playerReelingBar_UI;
 	[SerializeField] private RectTransform fishBar_UI;
+	[SerializeField] private Image fishBarSprite_Image;
+	[SerializeField] private ResultsUI resultsUIPrefab;
+
+	public ResultsUI currentInstantiatedResultsUI { get; private set; }
 
 	private void Awake()
 	{
@@ -27,6 +31,11 @@ public class UIManager : MonoBehaviour
 	public void ToggleReelingUI(bool value)
 	{
 		reelingSlider_Object.SetActive(value);
+	}
+
+	public void UpdateReelingUI(FishRuntimeData fishRuntimeData)
+	{
+		fishBarSprite_Image.sprite = fishRuntimeData.fishData.fishSprite;
 	}
 
 	public void SetReelingValues(float reelPorgress, float playerBarPosition, float fishBarPosition)
@@ -46,5 +55,16 @@ public class UIManager : MonoBehaviour
 		float y = fishBarPosition * (trackHeight - fishHeight);
 		fishBarPos.y = y;
 		fishBar_UI.anchoredPosition = fishBarPos;
+	}
+
+	public void SpawnResults(Rarity rarity, Sprite fishSprite, FishType fishName)
+	{
+		if(currentInstantiatedResultsUI != null)
+		{
+			return;
+		}
+
+		currentInstantiatedResultsUI = Instantiate(resultsUIPrefab, this.transform);
+		currentInstantiatedResultsUI.PopulateData(rarity, fishSprite, fishName);
 	}
 }

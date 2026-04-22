@@ -13,11 +13,8 @@ MonoBehaviour:
   m_Name: FishDataComposite
   m_EditorClassIdentifier: Assembly-CSharp::FishDataComposite
   AllFishData:
-  - {fileID: 11400000, guid: 9ebc1933f4bb4654a93cfb1a69bd04cc, type: 2}
   - {fileID: 11400000, guid: 69c2bcf69d776524ca76f212492b3faf, type: 2}
   - {fileID: 11400000, guid: d0cc587e29c4e0648a0948eaa8838a72, type: 2}
   - {fileID: 11400000, guid: 9e0eb69c1484c2f4eb97a3543793cfe8, type: 2}
-  - {fileID: 11400000, guid: 15d58c6716f4dd247a468a3fbbc00e86, type: 2}
   - {fileID: 11400000, guid: 41f6d337f5d0c244ab7232eb576ec912, type: 2}
   - {fileID: 11400000, guid: 4e070382578e0aa4486333e0c50e3685, type: 2}
-  - {fileID: 11400000, guid: ed9083a22d2c9a34db3a2bba28574aaa, type: 2}

@@ -27,6 +27,7 @@ public class FishingRodController : MonoBehaviour
 	[Range(15f, 80f)]
 	[SerializeField] private float maxCastDistance = 80.0f;
 
+	public Transform CastLineStartPoint => castLineStartPoint;
 
 	private Coroutine castRoutine;
 	private Quaternion baseFishingRodRotation;
@@ -148,6 +149,23 @@ public class FishingRodController : MonoBehaviour
 		//StartCoroutine(DelayedRipple());
 	}
 
+	public void UpdateLineEndPoint(Vector3 endPos)
+	{
+		if (currentLine == null) return;
+
+		currentLine.SetPosition(0, castLineStartPoint.position);
+		currentLine.SetPosition(1, endPos);
+	}
+
+	public void DisableLine()
+	{
+		if (currentLine != null)
+		{
+			Destroy(currentLine.gameObject);
+			Destroy(currentBobber.gameObject);
+			currentLine = null;
+		}
+	}
 
 	//private IEnumerator DelayedRipple()
 	//{

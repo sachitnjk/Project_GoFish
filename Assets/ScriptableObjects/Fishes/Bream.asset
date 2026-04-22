@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 111214dc1ad3c6a4ca6054356c3e9b95, type: 3}
   m_Name: Bream
   m_EditorClassIdentifier: Assembly-CSharp::FishData
-  fishType: 5
-  fishSprite: {fileID: 0}
+  fishType: 3
+  fishSprite: {fileID: -1526111193, guid: ca73a790b9c68244c8b743ec79dafc3e, type: 3}
   fishSpeed: 0.5
+  overrideController: {fileID: 22100000, guid: 231f5b00170cc3542863df5423479f0c, type: 2}
