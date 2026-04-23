@@ -25,7 +25,7 @@
   - Rarity directly influences **behavior difficulty** (implemented via 3 logic states)
 
   Fish animation:
-  - The fish data **Scriptable Objects** contians a field for **AnimationOverriderController**
+  - The fish data **Scriptable Objects** contians a field for **AnimationOverrideController**
   - This AOC overrides the default animation in the **Fish** prefab and resulting is teh animation of the fish from teh **Scriptable Objects**
 
 - **Water Shader**  
