@@ -12,12 +12,11 @@ public struct AudioConfig
 
 public class SoundManager : MonoBehaviour
 {
-	[SerializeField] private AudioConfig clickSFX_Config;
+	[SerializeField] private AudioConfig castLineSFX_Config;
+	[SerializeField] private AudioConfig reelingInSFX_Config;
+	[SerializeField] private AudioConfig resultsSFX_Config;
 	[SerializeField] private AudioConfig baseBGM_Config;
-	[SerializeField] private AudioConfig fishDeathSFX_Config;
 	[SerializeField] private AudioConfig buttonSFX_Config;
-	[SerializeField] private AudioConfig panelSlideSFX_Config;
-	[SerializeField] private AudioConfig upgradeSFX_Config;
 
 	[SerializeField] private AudioMixer audioMixer;
 
@@ -57,29 +56,24 @@ public class SoundManager : MonoBehaviour
 		bgmSource.Play();
 	}
 
-	public void PlayClickSFX()
-	{
-		PlaySFX(clickSFX_Config);
-	}
-
-	public void PlayFishDeathSFX()
-	{
-		PlaySFX(fishDeathSFX_Config);
-	}
-
 	public void PlayButtonSFX()
 	{
 		PlaySFX(buttonSFX_Config);
 	}
 
-	public void PlayPanelSlideSFX()
+	public void PlayCastLineSFX()
 	{
-		PlaySFX(panelSlideSFX_Config);
+		PlaySFX(castLineSFX_Config);
 	}
 
-	public void PlayUpgradeSFX()
+	public void PlayReelingInSFX()
 	{
-		PlaySFX(upgradeSFX_Config);
+		PlaySFX(reelingInSFX_Config);
+	}
+
+	public void PlayResultsSFX()
+	{
+		PlaySFX(resultsSFX_Config);
 	}
 
 	private void PlaySFX(AudioConfig audioConfig)

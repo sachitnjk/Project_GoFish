@@ -17,11 +17,9 @@ public class MainMenuState : UIState
 
 	public void OnPlayPressed()
 	{
-		EnterFullScreen();
-
 		PlayButtonSound();
 
-		SceneManager.LoadScene("FishingGame");
+		SceneManager.LoadScene("LoadingScene");
 	}
 
 	public void OnSettingsPressed()
@@ -47,12 +45,5 @@ public class MainMenuState : UIState
 		PlayButtonSound();
 
 		Application.Quit();
-	}
-
-	public void EnterFullScreen()
-	{
-#if UNITY_WEBGL && !UNITY_EDITOR
-        Screen.fullScreen = true;
-#endif
 	}
 }
