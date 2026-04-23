@@ -19,6 +19,7 @@ public class MainMenuState : UIState
 	{
 		PlayButtonSound();
 
+		LoadingManager.TargetScene = "FishingGame";
 		SceneManager.LoadScene("LoadingScene");
 
 		UIManager.Instance.UI_StateMachine.Pop();

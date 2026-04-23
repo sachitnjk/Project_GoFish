@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
 	{
 		isCastHeld = false;
 
-		if (fishingController.CurrentState != FishingState.Idle)
+		if (fishingController.CurrentState != FishingState.Idle || GameManager.Instance.IsReadyToEnd())
 		{
 			return;
 		}

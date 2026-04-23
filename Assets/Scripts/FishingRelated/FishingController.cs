@@ -49,14 +49,16 @@ public struct FishRuntimeData
 	public FishData fishData;
 	public Rarity rarity;
 	public FishBehaviour fishBehaviour;
+	public int fishScore;
 	public float reelSpeed;
 	public float failSpeed;
 
-	public FishRuntimeData(FishData fishData, Rarity rarity, FishBehaviour fishBehaviour, float reelSpeed, float failSpeed)
+	public FishRuntimeData(FishData fishData, Rarity rarity, FishBehaviour fishBehaviour, int fishScore, float reelSpeed, float failSpeed)
 	{
 		this.fishData = fishData;
 		this.rarity = rarity;
 		this.fishBehaviour = fishBehaviour;
+		this.fishScore = fishScore;
 		this.reelSpeed = reelSpeed;
 		this.failSpeed = failSpeed;
 	}
@@ -236,10 +238,11 @@ public class FishingController : MonoBehaviour
 			int randomIndex = UnityEngine.Random.Range(0, System.Enum.GetNames(typeof(Rarity)).Length);
 			Rarity randomizedRarity = (Rarity)Enum.GetValues(typeof(Rarity)).GetValue(randomIndex);
 			FishBehaviour fishBehaviour = GetFishBehaviour(randomizedRarity);
+			int fishScore = randomFishData.baseScore * GetRarityBasedScoreMultiplier(randomizedRarity);
 			float reelSpeed = GetReelMultiplier(fishBehaviour);
 			float failSpeed = GetFailMultiplier(fishBehaviour);
 
-			currentFishRuntimeData = new FishRuntimeData(randomFishData, randomizedRarity, fishBehaviour, reelSpeed, failSpeed);
+			currentFishRuntimeData = new FishRuntimeData(randomFishData, randomizedRarity, fishBehaviour, fishScore, reelSpeed, failSpeed);
 			SpawnFish(castEndPoint);
 			UIManager.Instance.UpdateReelingUI(currentFishRuntimeData);
 
@@ -294,7 +297,7 @@ public class FishingController : MonoBehaviour
 
 	private float GetFailMultiplier(FishBehaviour behaviour)
 	{
-		switch (currentFishRuntimeData.fishBehaviour)
+		switch (behaviour)
 		{
 			case FishBehaviour.Smooth: return 0.2f;
 			case FishBehaviour.Mixed: return 0.35f;
@@ -302,6 +305,21 @@ public class FishingController : MonoBehaviour
 		}
 
 		return 0.35f;
+	}
+
+	private int GetRarityBasedScoreMultiplier(Rarity rarity)
+	{
+		switch(rarity)
+		{
+			case Rarity.Common:
+				return 2;
+			case Rarity.Uncommon:
+				return 3;
+			case Rarity.Rare:
+				return 4;
+		}
+
+		return 1;
 	}
 
 	private void SpawnFish(Vector3 castEndPoint)
@@ -384,7 +402,7 @@ public class FishingController : MonoBehaviour
 
 	private void ShowResult()
 	{
-		UIManager.Instance.SpawnResults(currentFishRuntimeData.rarity, currentFishRuntimeData.fishData.fishSprite, currentFishRuntimeData.fishData.fishType);
+		UIManager.Instance.SpawnResults(currentFishRuntimeData.rarity, currentFishRuntimeData.fishData.fishSprite, currentFishRuntimeData.fishData.fishType, currentFishRuntimeData.fishScore);
 	}
 
 	#endregion

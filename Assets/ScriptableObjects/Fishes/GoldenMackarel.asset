@@ -15,4 +15,5 @@ MonoBehaviour:
   fishType: 0
   fishSprite: {fileID: 1454772012, guid: a7efc704f651f33499ce62f063ba3a05, type: 3}
   fishSpeed: 0.5
+  baseScore: 5
   overrideController: {fileID: 22100000, guid: d3b938b6f27012145bacd10b57da7d30, type: 2}

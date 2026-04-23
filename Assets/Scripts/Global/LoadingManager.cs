@@ -5,12 +5,21 @@ using UnityEngine.UI;
 
 public class LoadingManager : MonoBehaviour
 {
-
-	[SerializeField] private string sceneToLoad = "FishingGame";
+	public static string TargetScene;
 	[SerializeField] private Slider progressSlider;
+
+	private string sceneToLoad;
 
 	private void Start()
 	{
+		sceneToLoad = TargetScene;
+
+		if (string.IsNullOrEmpty(sceneToLoad))
+		{
+			Debug.LogError("No scene set for loading!");
+			return;
+		}
+
 		StartCoroutine(LoadSceneAsync());
 	}
 

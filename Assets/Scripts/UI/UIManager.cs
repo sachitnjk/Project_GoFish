@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +14,7 @@ public class UIManager : MonoBehaviour
 	[SerializeField] private RectTransform fishBar_UI;
 	[SerializeField] private Image fishBarSprite_Image;
 	[SerializeField] private ResultsUI resultsUIPrefab;
+	[SerializeField] private TextMeshProUGUI totalScore_Text;
 
 	[field: SerializeField] public UIStateMachine UI_StateMachine { get; private set; }
 
@@ -61,7 +63,7 @@ public class UIManager : MonoBehaviour
 		fishBar_UI.anchoredPosition = fishBarPos;
 	}
 
-	public void SpawnResults(Rarity rarity, Sprite fishSprite, FishType fishName)
+	public void SpawnResults(Rarity rarity, Sprite fishSprite, FishType fishName, int fishScoreToAdd)
 	{
 		if(currentInstantiatedResultsUI != null)
 		{
@@ -69,6 +71,20 @@ public class UIManager : MonoBehaviour
 		}
 
 		currentInstantiatedResultsUI = Instantiate(resultsUIPrefab, this.transform);
-		currentInstantiatedResultsUI.PopulateData(rarity, fishSprite, fishName);
+		currentInstantiatedResultsUI.PopulateData(rarity, fishSprite, fishName, fishScoreToAdd);
+
+		GameManager.Instance.AddToScore(fishScoreToAdd);
+	}
+
+	public void ToggleTotalScoreUI(bool value)
+	{
+		totalScore_Text.gameObject.SetActive(value);
+
+		UpdateTotalScoreUI();
+	}
+
+	public void UpdateTotalScoreUI()
+	{
+		totalScore_Text.text = "Total Score: " + GameManager.Instance.TotalScore.ToString();
 	}
 }
