@@ -1,6 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public struct AudioConfig
@@ -13,7 +14,9 @@ public struct AudioConfig
 public class SoundManager : MonoBehaviour
 {
 	[SerializeField] private AudioConfig castLineSFX_Config;
-	[SerializeField] private AudioConfig reelingInSFX_Config;
+	[SerializeField] private AudioConfig onBiteSFX_Config;
+	[SerializeField] private AudioConfig biteSuccessHitSFX_Config;
+	[SerializeField] private AudioConfig fishCaughtSFXConfig;
 	[SerializeField] private AudioConfig resultsSFX_Config;
 	[SerializeField] private AudioConfig baseBGM_Config;
 	[SerializeField] private AudioConfig buttonSFX_Config;
@@ -22,6 +25,10 @@ public class SoundManager : MonoBehaviour
 
 	[SerializeField] private AudioSource bgmSource;
 	[SerializeField] private AudioSource sfxSource;
+
+	private float masterVolume;
+	private float bgmVolume;
+	private float sfxVolume;
 
 	public static SoundManager instance;
 
@@ -38,12 +45,34 @@ public class SoundManager : MonoBehaviour
 		DontDestroyOnLoad(gameObject);
 		bgmSource.loop = true;
 
+		SetMasterVolume(1f);
+		SetBGMVolume(1f);
+		SetSFXVolume(1f);
+
 		DontDestroyOnLoad(gameObject);
 	}
 
 	private void Start()
 	{
+
 		PlayBGM();
+	}
+
+	private void OnEnable()
+	{
+		SceneManager.sceneLoaded += OnSceneLoaded;
+	}
+
+	private void OnDisable()
+	{
+		SceneManager.sceneLoaded -= OnSceneLoaded;
+	}
+
+	private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+	{
+		SetMasterVolume(masterVolume);
+		SetBGMVolume(bgmVolume);
+		SetSFXVolume(sfxVolume);
 	}
 
 	public void PlayBGM()
@@ -66,9 +95,19 @@ public class SoundManager : MonoBehaviour
 		PlaySFX(castLineSFX_Config);
 	}
 
-	public void PlayReelingInSFX()
+	public void PlayOnBiteSFX()
 	{
-		PlaySFX(reelingInSFX_Config);
+		PlaySFX(onBiteSFX_Config);
+	}
+
+	public void PlayOnBiteSuccessSFX()
+	{
+		PlaySFX(biteSuccessHitSFX_Config);
+	}
+
+	public void PlayFishCaughtSFX()
+	{
+		PlaySFX(fishCaughtSFXConfig);
 	}
 
 	public void PlayResultsSFX()
@@ -89,16 +128,19 @@ public class SoundManager : MonoBehaviour
 
 	public void SetMasterVolume(float value)
 	{
+		masterVolume = value;
 		audioMixer.SetFloat("MasterVolume", ConbvertToDB(value));
 	}
 
 	public void SetBGMVolume(float value)
 	{
+		bgmVolume = value;
 		audioMixer.SetFloat("BGMVolume", ConbvertToDB(value));
 	}
 
 	public void SetSFXVolume(float value)
 	{
+		sfxVolume = value;
 		audioMixer.SetFloat("SFXVolume", ConbvertToDB(value));
 	}
 

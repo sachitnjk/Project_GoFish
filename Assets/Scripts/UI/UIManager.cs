@@ -28,6 +28,8 @@ public class UIManager : MonoBehaviour
 		{
 			Destroy(this.gameObject);
 		}
+
+		DontDestroyOnLoad(gameObject);
 	}
 
 	public void ToggleReelingUI(bool value)

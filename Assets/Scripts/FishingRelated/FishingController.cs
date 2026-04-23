@@ -171,12 +171,14 @@ public class FishingController : MonoBehaviour
 				stateTimer = UnityEngine.Random.Range(waitingStateMinTime, waitingStateMaxTime);
 				break;
 			case FishingState.Bite:
+				SoundManager.instance.PlayOnBiteSFX();
 				stateTimer = biteStateTime;
 				break;
 			case FishingState.Reeling:
 				StartReeling();
 				break;
 			case FishingState.Result:
+				SoundManager.instance.PlayResultsSFX();
 				GameManager.Instance.IsResultsLock = true;
 				ShowResult();
 				//stateTimer = resultStateTime;
@@ -227,6 +229,8 @@ public class FishingController : MonoBehaviour
 		//Spawn random fish
 		if(fishDataComposite != null)
 		{
+			SoundManager.instance.PlayOnBiteSuccessSFX();
+
 			FishData randomFishData = fishDataComposite.GetRandomFishData();
 
 			int randomIndex = UnityEngine.Random.Range(0, System.Enum.GetNames(typeof(Rarity)).Length);
@@ -368,6 +372,7 @@ public class FishingController : MonoBehaviour
 		if(fish != null)
 		{
 			fish.position = end;
+			SoundManager.instance.PlayFishCaughtSFX();
 		}
 
 		Destroy(currentSpawnedFish);

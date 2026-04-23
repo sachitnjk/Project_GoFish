@@ -47,23 +47,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoundManager
   castLineSFX_Config:
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: a62279dcdfa1d774e8453122b0b02c09, type: 3}
     group: {fileID: -5430325949900785025, guid: 63c9cdb55ead81a4b8a6b0072993d7fa, type: 2}
     isLooping: 0
-  reelingInSFX_Config:
-    clip: {fileID: 0}
+  onBiteSFX_Config:
+    clip: {fileID: 8300000, guid: f9ac1d48d91ac954282443cb7a54b29d, type: 3}
     group: {fileID: -5430325949900785025, guid: 63c9cdb55ead81a4b8a6b0072993d7fa, type: 2}
+    isLooping: 0
+  biteSuccessHitSFX_Config:
+    clip: {fileID: 8300000, guid: 8d2a58e8bb34a594d96732240319982d, type: 3}
+    group: {fileID: -5430325949900785025, guid: 63c9cdb55ead81a4b8a6b0072993d7fa, type: 2}
+    isLooping: 0
+  fishCaughtSFXConfig:
+    clip: {fileID: 8300000, guid: 66f29ed56290431479686940107bff8a, type: 3}
+    group: {fileID: 0}
     isLooping: 0
   resultsSFX_Config:
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: ac1329f51c4aec34299d9f669374f674, type: 3}
     group: {fileID: -5430325949900785025, guid: 63c9cdb55ead81a4b8a6b0072993d7fa, type: 2}
     isLooping: 0
   baseBGM_Config:
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 985a337ad55647e499a31648262d5555, type: 3}
     group: {fileID: 6222503113577998902, guid: 63c9cdb55ead81a4b8a6b0072993d7fa, type: 2}
     isLooping: 1
   buttonSFX_Config:
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: eb44c69e30cf02e4fa5dae85a6aae608, type: 3}
     group: {fileID: -5430325949900785025, guid: 63c9cdb55ead81a4b8a6b0072993d7fa, type: 2}
     isLooping: 0
   audioMixer: {fileID: 24100000, guid: 63c9cdb55ead81a4b8a6b0072993d7fa, type: 2}

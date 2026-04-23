@@ -20,6 +20,8 @@ public class MainMenuState : UIState
 		PlayButtonSound();
 
 		SceneManager.LoadScene("LoadingScene");
+
+		UIManager.Instance.UI_StateMachine.Pop();
 	}
 
 	public void OnSettingsPressed()
