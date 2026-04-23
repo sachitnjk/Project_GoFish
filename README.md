@@ -29,8 +29,8 @@
   - This AOC overrides the default animation in the **Fish** prefab and resulting is teh animation of the fish from teh **Scriptable Objects**
 
 - **Water Shader**  
-  - Ripple effect reused from a previous project  
-  - Shader normals sourced from reference images  
+  Initially reused a shader from a previous project. However, due to compatibility issues with URP and conflicts in the ripple logic, it produced visual artifacts.  
+  As a temporary solution, the material was switched to **URP Lit** to ensure stable and clean visuals.
 
 - **Audio System**  
   Managed using Unity’s **Audio Mixer** with three channels:
