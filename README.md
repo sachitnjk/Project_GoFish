@@ -3,7 +3,7 @@
 - **Mouse** — Navigate menus  
 - **Space** — Cast line / start fishing  
 - **Space (after casting)** — Cast again to refresh the cast
-- **Space (after state changes to *"Bite"* )** — Trigger the reeling in 
+- **Space (after state changes to *"Bite"* )** — Triggr the reeling in 
 
 ---
 
@@ -13,7 +13,7 @@
   Implemented using a *pushdown automata* pattern to manage layered UI states cleanly.
 
 - **Fishing System**  
-  Built on a *state machine* to handle transitions such as casting, waiting, bite, and reeling.
+  Built on a *state machine* to handle transitions such as casting, waiting, bite, adn reeling.
 
 - **Fish Data Design**  
   Combines:
@@ -23,6 +23,10 @@
   Additional behavior:
   - Fish rarity is randomized  
   - Rarity directly influences **behavior difficulty** (implemented via 3 logic states)
+
+  Fish animation:
+  - The fish data **Scriptable Objects** contians a field for **AnimationOverriderController**
+  - This AOC overrides the default animation in the **Fish** prefab and resulting is teh animation of the fish from teh **Scriptable Objects**
 
 - **Water Shader**  
   - Ripple effect reused from a previous project  
@@ -56,10 +60,10 @@
 
 ## Future Improvements / Wishlist
 
-Things that were planned but considered too time-consuming or out of scope for the current version:
+Things that were planned but considered too time consuming or out of scope for the current version:
 
 - Adding visible fish in the water  
-  - Would use a flocking system based on **Boids** logic  
+  - Would use a flocking system based on teh **BOIDS** logic  
 
 - Adding UI animations  
 
